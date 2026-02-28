@@ -7,11 +7,13 @@ export const videoFileSchema = z.object({
   duration: z.number(),
   url: z.string(),
   type: z.string(),
+  color: z.string(),
 });
 
-export const segmentSchema = z.object({
+export const chunkSchema = z.object({
   id: z.string(),
   videoId: z.string(),
+  videoUrl: z.string(),
   videoName: z.string(),
   startTime: z.number(),
   endTime: z.number(),
@@ -19,19 +21,4 @@ export const segmentSchema = z.object({
 });
 
 export type VideoFile = z.infer<typeof videoFileSchema>;
-export type Segment = z.infer<typeof segmentSchema>;
-
-export interface ExportSettings {
-  width: number;
-  height: number;
-  fps: number;
-  quality: number;
-}
-
-export const insertUserSchema = z.object({
-  username: z.string(),
-  password: z.string(),
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = { id: string; username: string; password: string };
+export type Chunk = z.infer<typeof chunkSchema>;
