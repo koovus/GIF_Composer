@@ -1,18 +1,37 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const videoFileSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  size: z.number(),
+  duration: z.number(),
+  url: z.string(),
+  type: z.string(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const segmentSchema = z.object({
+  id: z.string(),
+  videoId: z.string(),
+  videoName: z.string(),
+  startTime: z.number(),
+  endTime: z.number(),
+  color: z.string(),
+});
+
+export type VideoFile = z.infer<typeof videoFileSchema>;
+export type Segment = z.infer<typeof segmentSchema>;
+
+export interface ExportSettings {
+  width: number;
+  height: number;
+  fps: number;
+  quality: number;
+}
+
+export const insertUserSchema = z.object({
+  username: z.string(),
+  password: z.string(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export type User = { id: string; username: string; password: string };

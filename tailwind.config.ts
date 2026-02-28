@@ -6,12 +6,11 @@ export default {
   theme: {
     extend: {
       borderRadius: {
-        lg: ".5625rem", /* 9px */
-        md: ".375rem", /* 6px */
-        sm: ".1875rem", /* 3px */
+        lg: ".5625rem",
+        md: ".375rem",
+        sm: ".1875rem",
       },
       colors: {
-        // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
         border: "hsl(var(--border) / <alpha-value>)",
@@ -81,11 +80,37 @@ export default {
           busy: "rgb(239 68 68)",
           offline: "rgb(156 163 175)",
         },
+        coral: {
+          DEFAULT: "#FF6B6B",
+          light: "#FF8A8A",
+          dark: "#E85555",
+        },
+        teal: {
+          DEFAULT: "#4ECDC4",
+          light: "#6ED9D2",
+          dark: "#3BB8B0",
+        },
+        navy: {
+          DEFAULT: "#1A1A2E",
+          light: "#16213E",
+          dark: "#0F0F1E",
+        },
+        salmon: {
+          DEFAULT: "#FFA07A",
+          light: "#FFB899",
+          dark: "#E88A64",
+        },
+        mint: {
+          DEFAULT: "#95E1D3",
+          light: "#B0EBE0",
+          dark: "#7DCDC0",
+        },
+        timeline: "#16213E",
       },
       fontFamily: {
-        sans: ["var(--font-sans)"],
-        serif: ["var(--font-serif)"],
-        mono: ["var(--font-mono)"],
+        sans: ["Inter", "var(--font-sans)"],
+        serif: ["Georgia", "serif"],
+        mono: ["JetBrains Mono", "var(--font-mono)"],
       },
       keyframes: {
         "accordion-down": {
@@ -96,10 +121,20 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.4" },
+          "50%": { opacity: "1" },
+        },
+        "slide-in": {
+          from: { transform: "translateY(10px)", opacity: "0" },
+          to: { transform: "translateY(0)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "slide-in": "slide-in 0.3s ease-out",
       },
     },
   },
