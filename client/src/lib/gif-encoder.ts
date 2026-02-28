@@ -228,9 +228,10 @@ export async function captureVideoFrames(
   videoUrl: string,
   startTime: number,
   endTime: number,
-  width: number,
-  height: number,
-  fps: number
+  canvasWidth: number,
+  canvasHeight: number,
+  fps: number,
+  sourceAspectRatio?: number
 ): Promise<ImageData[]> {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video");
@@ -239,8 +240,8 @@ export async function captureVideoFrames(
     video.preload = "auto";
 
     const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
     const ctx = canvas.getContext("2d")!;
 
     const frames: ImageData[] = [];
@@ -252,8 +253,27 @@ export async function captureVideoFrames(
     };
 
     video.onseeked = () => {
-      ctx.drawImage(video, 0, 0, width, height);
-      frames.push(ctx.getImageData(0, 0, width, height));
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+      const ar = sourceAspectRatio || (video.videoWidth / video.videoHeight) || (canvasWidth / canvasHeight);
+      const canvasAR = canvasWidth / canvasHeight;
+      let drawW: number, drawH: number, drawX: number, drawY: number;
+
+      if (ar > canvasAR) {
+        drawW = canvasWidth;
+        drawH = canvasWidth / ar;
+        drawX = 0;
+        drawY = (canvasHeight - drawH) / 2;
+      } else {
+        drawH = canvasHeight;
+        drawW = canvasHeight * ar;
+        drawX = (canvasWidth - drawW) / 2;
+        drawY = 0;
+      }
+
+      ctx.drawImage(video, drawX, drawY, drawW, drawH);
+      frames.push(ctx.getImageData(0, 0, canvasWidth, canvasHeight));
 
       currentTime += interval;
       if (currentTime <= endTime) {

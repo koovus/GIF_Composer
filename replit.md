@@ -13,7 +13,8 @@ A web-based multi-video GIF creation tool designed for artists. Users upload vid
 - **Auto-chunking**: Videos are automatically sliced into configurable time segments (0.5s - 3s)
 - **Visual sampler**: Chunks displayed as a thumbnail grid; click to select/deselect
 - **Composition strip**: Bottom strip shows selected chunks in order, supports drag reorder
-- **Export**: Client-side GIF encoding from selected chunks
+- **Aspect ratio preservation**: Each video's native width/height is captured on load; chunks carry an `aspectRatio` property used for thumbnails, grid cards, and export
+- **Export**: Client-side GIF encoding from selected chunks; letterboxes/pillarboxes frames from chunks with different aspect ratios to maintain correct proportions
 
 ## File Structure
 ```

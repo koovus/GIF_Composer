@@ -44,6 +44,7 @@ const CHUNK_SIZES = [
 
 function generateChunks(video: VideoFile, chunkDuration: number): Chunk[] {
   const chunks: Chunk[] = [];
+  const aspectRatio = video.width && video.height ? video.width / video.height : 16 / 9;
   let t = 0;
   let idx = 0;
   while (t < video.duration) {
@@ -57,6 +58,7 @@ function generateChunks(video: VideoFile, chunkDuration: number): Chunk[] {
       startTime: t,
       endTime: end,
       color: video.color,
+      aspectRatio,
     });
     t = end;
     idx++;
@@ -123,6 +125,8 @@ export default function Workspace() {
                   url: v.url,
                   type: v.type,
                   color: VIDEO_COLORS[(colorStart + i) % VIDEO_COLORS.length],
+                  width: video.videoWidth || 1920,
+                  height: video.videoHeight || 1080,
                 });
               };
               video.onerror = () => {
@@ -134,6 +138,8 @@ export default function Workspace() {
                   url: v.url,
                   type: v.type,
                   color: VIDEO_COLORS[(colorStart + i) % VIDEO_COLORS.length],
+                  width: 1920,
+                  height: 1080,
                 });
               };
               video.src = v.url;
@@ -250,7 +256,8 @@ export default function Workspace() {
     setExportProgress(0);
     setExportComplete(false);
 
-    const height = Math.round(exportWidth * 0.5625);
+    const firstChunkAR = selectedChunks[0]?.aspectRatio || (16 / 9);
+    const height = Math.round(exportWidth / firstChunkAR);
 
     try {
       const encoder = new GifEncoder(exportWidth, height);
@@ -264,7 +271,8 @@ export default function Workspace() {
           chunk.endTime,
           exportWidth,
           height,
-          exportFps
+          exportFps,
+          chunk.aspectRatio
         );
 
         for (const frame of frames) {

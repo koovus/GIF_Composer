@@ -45,9 +45,11 @@ function ChunkCard({
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      canvas.width = 320;
-      canvas.height = 180;
-      ctx.drawImage(video, 0, 0, 320, 180);
+      const thumbW = 320;
+      const thumbH = Math.round(thumbW / chunk.aspectRatio);
+      canvas.width = thumbW;
+      canvas.height = thumbH;
+      ctx.drawImage(video, 0, 0, thumbW, thumbH);
       setThumbnailReady(true);
       video.remove();
     };
@@ -112,7 +114,10 @@ function ChunkCard({
         boxShadow: isSelected ? `0 0 12px ${chunk.color}30, inset 0 0 0 2px ${chunk.color}` : undefined,
       }}
     >
-      <div className="relative aspect-video bg-navy-dark rounded-md overflow-hidden">
+      <div
+        className="relative bg-navy-dark rounded-md overflow-hidden"
+        style={{ aspectRatio: `${chunk.aspectRatio}` }}
+      >
         <canvas
           ref={canvasRef}
           className={`absolute inset-0 w-full h-full object-cover ${isHovering ? "opacity-0" : "opacity-100"} transition-opacity`}

@@ -8,6 +8,8 @@ export const videoFileSchema = z.object({
   url: z.string(),
   type: z.string(),
   color: z.string(),
+  width: z.number(),
+  height: z.number(),
 });
 
 export const chunkSchema = z.object({
@@ -18,6 +20,7 @@ export const chunkSchema = z.object({
   startTime: z.number(),
   endTime: z.number(),
   color: z.string(),
+  aspectRatio: z.number(),
 });
 
 export type VideoFile = z.infer<typeof videoFileSchema>;

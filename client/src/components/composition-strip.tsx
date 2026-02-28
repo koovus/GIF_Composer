@@ -50,9 +50,11 @@ function StripItem({
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      canvas.width = 120;
-      canvas.height = 68;
-      ctx.drawImage(video, 0, 0, 120, 68);
+      const thumbW = 120;
+      const thumbH = Math.round(thumbW / chunk.aspectRatio);
+      canvas.width = thumbW;
+      canvas.height = thumbH;
+      ctx.drawImage(video, 0, 0, thumbW, thumbH);
       video.remove();
     };
 
@@ -81,7 +83,8 @@ function StripItem({
       <div className="relative rounded-md overflow-hidden" style={{ borderTop: `2px solid ${chunk.color}` }}>
         <canvas
           ref={canvasRef}
-          className="w-full aspect-video bg-navy-dark"
+          className="w-full bg-navy-dark"
+          style={{ aspectRatio: `${chunk.aspectRatio}` }}
         />
         <button
           data-testid={`button-strip-remove-${chunk.id}`}
