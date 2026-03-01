@@ -249,6 +249,15 @@ export default function Workspace() {
     setSelectionOrder([]);
   }, []);
 
+  const handleClearAll = useCallback(() => {
+    videos.forEach((v) => {
+      fetch(`/api/videos/${v.id}`, { method: "DELETE" }).catch(() => {});
+    });
+    setVideos([]);
+    setSelectedIds(new Set());
+    setSelectionOrder([]);
+  }, [videos]);
+
   const handleExport = useCallback(async () => {
     if (selectedChunks.length === 0 || isExporting) return;
 
@@ -413,6 +422,19 @@ export default function Workspace() {
                 onClick={() => setShowSettings(!showSettings)}
               >
                 <Settings2 className="h-3.5 w-3.5" />
+              </Button>
+
+              <div className="w-px h-5 bg-border/30" />
+
+              <Button
+                data-testid="button-clear-all"
+                size="sm"
+                variant="ghost"
+                onClick={handleClearAll}
+                className="gap-1 text-[11px] font-mono text-red-400 hover:text-red-300"
+              >
+                <Trash2 className="h-3 w-3" />
+                Clear All
               </Button>
             </>
           )}
